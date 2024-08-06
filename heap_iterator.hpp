@@ -40,8 +40,8 @@ public:
             }
         }  
         //if the K is not 2 we throw error bcause heap iterator works just with binary tree
-        else if (k > 2) {
-            std::cout << "Error in the value of K.The k is different of 2." << std::endl;
+        else if (k > 2 && root!=nullptr) {
+            std::cout << "HEAP ITERATOR: Error in the value of K - different of 2." << std::endl;
         }
     }
 

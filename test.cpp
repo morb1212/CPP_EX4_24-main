@@ -9,6 +9,22 @@
 
 using namespace std;
 
+TEST_CASE("error in tree") {
+    tree<int> tr(2);
+    //no root
+    CHECK_THROWS_AS(tr.add_sub_node(1, 4), std::runtime_error);
+    tr.add_root(1);
+    tr.add_sub_node(1, 2);
+    tr.add_sub_node(1, 3);
+    tr.add_sub_node(3, 3);
+    tr.add_sub_node(2, 3);
+    tr.add_sub_node(2, 4);
+    tr.add_sub_node(4, 9.5);
+    //error in number of children
+    CHECK_THROWS_AS(tr.add_sub_node(1, 7), std::runtime_error);
+    //not found the parent
+    CHECK_THROWS_AS(tr.add_sub_node(5, 4), std::runtime_error);
+}
 TEST_CASE("Tree binary integer") {
     tree<int> tr(2);
     tr.add_root(1);
@@ -181,7 +197,7 @@ TEST_CASE("Heap with int") {
 }
 
 TEST_CASE("Heap Iterator with an empty tree") {
-    tree<int> tr(3);
+    tree<int> tr(2);
     // No root or nodes added, so the heap size should be 0
 
     // Create the iterator
@@ -208,6 +224,19 @@ TEST_CASE("Heap Iterator with tree having only root") {
     // Advance the iterator and check that it reaches the end
     ++it;
     CHECK(it == end); // After advancing, it should reach the end
+}
+TEST_CASE("Heap Iterator with k different then 2") {
+    // Setup: Create a tree with only a root
+    tree<int> tr(3);
+    tr.add_root(1);
+    tr.add_sub_node(1, 2);
+    tr.add_sub_node(1, 3);
+    tr.add_sub_node(1, 4);
+    tr.add_sub_node(4, 5);
+    // Create the iterator
+    auto it = tr.begin_heap();
+    auto end = tr.end_heap();
+    CHECK(it == end);
 }
 TEST_CASE("BFS and DFS produce the same order for a linear tree") {
     // Setup: Create a tree where each node has exactly one child
@@ -242,4 +271,30 @@ TEST_CASE("BFS and DFS produce the same order for a linear tree") {
     // Verify both orders are the same
     CHECK(bfs_result == expected_order);
     CHECK(dfs_result == expected_order);
+}
+
+TEST_CASE("BFS with duble") {
+    tree<double> tr(2);
+    tr.add_root(1.3);
+    tr.add_sub_node(1.3, 2.5);
+    tr.add_sub_node(1.3, 3);
+    tr.add_sub_node(3, 4);
+    tr.add_sub_node(2.5, 5);
+    tr.add_sub_node(2.5, 6);
+    tr.add_sub_node(4, 7.8);
+
+    std::vector<double> expected_order = {1.3, 2.5, 3, 5, 6, 4,7.8};
+    // Create an iterator and verify the traversal
+    auto it = tr.begin_bfs_scan();
+    auto end = tr.end_bfs_scan();
+    
+    int index = 0;
+    while (it != end) {
+        CHECK(*it == expected_order[index]);
+        ++it;
+        ++index;
+    }
+
+    // Ensure we have traversed all nodes
+    CHECK(index == expected_order.size());
 }
