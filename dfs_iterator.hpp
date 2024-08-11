@@ -1,3 +1,5 @@
+//314923822
+//morberger444@gmail.com
 #ifndef DFS_ITERATOR_HPP
 #define DFS_ITERATOR_HPP
 #include <stack>
@@ -21,7 +23,7 @@ public:
 
 template <typename T>
 dfs_iterator<T>::dfs_iterator(Node<T>* root) : current_node(root) {
-    if (root) {//check if the root exists
+    if (root) {
         stack_dfs.push(root);//if the root exists we add to the stack 
     }
 }
