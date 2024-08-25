@@ -112,7 +112,7 @@ int main() {
     for (auto it = first_tree.begin_heap(); it != first_tree.end_heap(); ++it) {cout << *it << " ";}
     cout << endl;
 
-    tree<int> second_tree(3);
+    tree<Complex> second_tree(3);
     second_tree.add_root(1);
     second_tree.add_sub_node(1, 2);
     second_tree.add_sub_node(1, 3);

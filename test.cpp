@@ -300,3 +300,29 @@ TEST_CASE("BFS with duble") {
     // Ensure we have traversed all nodes
     CHECK(index == expected_order.size());
 }
+
+TEST_CASE("BFS with complex") {
+    tree<Complex> tr(2);
+    tr.add_root(1.3);
+    tr.add_sub_node(1.3, 2.5);
+    tr.add_sub_node(1.3, 3);
+    tr.add_sub_node(3, 4);
+    tr.add_sub_node(2.5, 5);
+    tr.add_sub_node(2.5, 6);
+    tr.add_sub_node(4, 7.8);
+
+    std::vector<double> expected_order = {1.3, 2.5, 3, 5, 6, 4,7.8};
+    // Create an iterator and verify the traversal
+    auto it = tr.begin_bfs_scan();
+    auto end = tr.end_bfs_scan();
+    
+    int index = 0;
+    while (it != end) {
+        CHECK(*it == expected_order[index]);
+        ++it;
+        ++index;
+    }
+
+    // Ensure we have traversed all nodes
+    CHECK(index == expected_order.size());
+}
